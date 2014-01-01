@@ -4,9 +4,7 @@ module OmniAuth
   module Strategies
     class Gca < OmniAuth::Strategies::OAuth2
       GCA_SSO_PROVIDER_URL = ENV["GCA_SSO_GATEWAY"] || "http://localhost:3000"
-      
-      option :name, :gca
-  
+        
       class << self
         attr_accessor :gca_sso_token
       end
