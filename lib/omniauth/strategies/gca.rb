@@ -10,9 +10,9 @@ module OmniAuth
       end
 
       option :client_options, {
-        :site =>  option.provider_uri,
-        :authorize_url => "#{option.provider_uri}/oauth/authorize",
-        :access_token_url => "#{option.provider_uri}/oauth/token"
+        :site =>  options.provider_uri,
+        :authorize_url => "#{options.provider_uri}/oauth/authorize",
+        :access_token_url => "#{options.provider_uri}/oauth/token"
       }
 
       uid { raw_info['id'] }
