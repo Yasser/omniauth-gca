@@ -8,9 +8,9 @@ module OmniAuth
       end
 
       option :client_options, {
-        :site =>  "http://0.0.0.0:3000",
-        :authorize_url => "http://0.0.0.0:3000/oauth/authorize",
-        :access_token_url => "http://0.0.0.0:3000/oauth/token"
+        :site =>  "http://gca-sso.herokuapp.com",
+        :authorize_url => "http://gca-sso.herokuapp.com/oauth/authorize",
+        :access_token_url => "http://gca-sso.herokuapp.com/oauth/token"
       }
 
       uid { raw_info['doc_id'] }
