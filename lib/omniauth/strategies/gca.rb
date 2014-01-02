@@ -3,18 +3,14 @@ require 'omniauth-oauth2'
 module OmniAuth
   module Strategies
     class Gca < OmniAuth::Strategies::OAuth2
-      args [:client_id, :client_secret, :provider_uri]
-      
-      option :provider_uri, nil
-      
       class << self
         attr_accessor :gca_sso_token
       end
 
       option :client_options, {
-        :site =>  options.provider_uri,
-        :authorize_url => "#{options.provider_uri}/oauth/authorize",
-        :access_token_url => "#{options.provider_uri}/oauth/token"
+        :site =>  "http://0.0.0.0:3000",
+        :authorize_url => "http://0.0.0.0:3000/oauth/authorize",
+        :access_token_url => "http://0.0.0.0:3000/oauth/token"
       }
 
       uid { raw_info['doc_id'] }
