@@ -15,7 +15,7 @@ module OmniAuth
         :access_token_url => "#{GCA_SSO_PROVIDER_URL}/oauth/token"
       }
 
-      uid { raw_info['id'] }
+      uid { raw_info['doc_id'] }
 
       info do
         {
