@@ -3,16 +3,16 @@ require 'omniauth-oauth2'
 module OmniAuth
   module Strategies
     class Gca < OmniAuth::Strategies::OAuth2
-      GCA_SSO_PROVIDER_URL = ENV["GCA_SSO_GATEWAY"]
-        
+      option :provider_uri, nil
+            
       class << self
         attr_accessor :gca_sso_token
       end
 
       option :client_options, {
-        :site =>  GCA_SSO_PROVIDER_URL,
-        :authorize_url => "#{GCA_SSO_PROVIDER_URL}/oauth/authorize",
-        :access_token_url => "#{GCA_SSO_PROVIDER_URL}/oauth/token"
+        :site =>  option.provider_uri,
+        :authorize_url => "#{option.provider_uri}/oauth/authorize",
+        :access_token_url => "#{option.provider_uri}/oauth/token"
       }
 
       uid { raw_info['id'] }
