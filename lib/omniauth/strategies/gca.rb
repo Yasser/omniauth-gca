@@ -20,7 +20,8 @@ module OmniAuth
           email: raw_info['email'],
           first_name: raw_info['first_name'],
           last_name: raw_info['last_name'],
-          title: raw_info['title']
+          title: raw_info['title'],
+          group: raw_info['user_groups']
         }
       end
 
