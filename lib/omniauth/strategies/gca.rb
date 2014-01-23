@@ -37,16 +37,12 @@ module OmniAuth
   end
 end
 
-# Handles storing the token in session and passing it on to ActiveResource
-# model via the @headers instance variable. In order to set, this requires 
-# 'class_attribute :headers' to be set in the model.
-
 class GcaSsoApi
   def initialize(request_uri)
     @request_uri = request_uri
     @provider_host = OmniAuth::Strategies::Gca.default_options['client_options']['site']
-    @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: provider_host, :raise_errors => false)
-    @token = client.client_credentials.get_token
+    @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
+    @token = @client.client_credentials.get_token
   end
   
   def response
