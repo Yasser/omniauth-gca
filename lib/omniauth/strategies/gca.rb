@@ -38,9 +38,9 @@ module OmniAuth
 end
 
 class GcaSsoApi
-  def initialize(request_uri, *params)
+  def initialize(request_uri, params={})
     @request_uri = request_uri
-    @params = params || {}
+    @params = params
     @provider_host = OmniAuth::Strategies::Gca.default_options['client_options']['site']
     @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
     @token = @client.client_credentials.get_token
