@@ -38,7 +38,7 @@ module OmniAuth
 end
 
 class GcaSsoApi
-  def initialize(request_uri, *params={})
+  def initialize(request_uri, *params)
     @request_uri = request_uri
     @params = params || {}
     @provider_host = OmniAuth::Strategies::Gca.default_options['client_options']['site']
