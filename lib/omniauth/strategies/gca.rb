@@ -13,7 +13,7 @@ module OmniAuth
         :access_token_url => "http://gca-sso.herokuapp.com/oauth/token"
       }
 
-      uid { raw_info['doc_id'] }
+      uid { raw_info['uid'] }
 
       info do
         {
