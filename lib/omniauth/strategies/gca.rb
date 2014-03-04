@@ -8,9 +8,9 @@ module OmniAuth
       end
 
       option :client_options, {
-        :site =>  ENV["GCA_SSO_GATEWAY"],
-        :authorize_url => "#{ENV["GCA_SSO_GATEWAY"]}/oauth/authorize",
-        :access_token_url => "#{ENV["GCA_SSO_GATEWAY"]}/oauth/token"
+        :site =>  "http://sso.gcadoctors.com",
+        :authorize_url => "http://sso.gcadoctors.com/oauth/authorize",
+        :access_token_url => "http://sso.gcadoctors.com/oauth/token"
       }
 
       uid { raw_info['uid'] }
