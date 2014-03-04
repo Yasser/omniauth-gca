@@ -7,11 +7,19 @@ module OmniAuth
         attr_accessor :gca_sso_token
       end
 
-      option :client_options, {
-        :site =>  "http://sso.gcadoctors.com",
-        :authorize_url => "http://sso.gcadoctors.com/oauth/authorize",
-        :access_token_url => "http://sso.gcadoctors.com/oauth/token"
-      }
+      if Rails.env.production?
+        option :client_options, {
+          :site =>  "http://sso.gcadoctors.com",
+          :authorize_url => "http://sso.gcadoctors.com/oauth/authorize",
+          :access_token_url => "http://sso.gcadoctors.com/oauth/token"
+        }
+      else
+        option :client_options, {
+          :site =>  "http://0.0.0.0:3000",
+          :authorize_url => "http://0.0.0.0:3000/oauth/authorize",
+          :access_token_url => "http://0.0.0.0:3000/oauth/token"
+        }
+      end
 
       uid { raw_info['uid'] }
 
