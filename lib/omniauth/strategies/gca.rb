@@ -35,6 +35,7 @@ module OmniAuth
 
       extra do
         {
+          session_trusted: raw_info['session']['trusted']
         }
       end
 
