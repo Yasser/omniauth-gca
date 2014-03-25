@@ -21,15 +21,15 @@ module OmniAuth
         }
       end
 
-      uid { raw_info['uid'] }
+      uid { raw_info['user']['uid'] }
 
       info do
         {
-          email: raw_info['email'],
-          first_name: raw_info['first_name'],
-          last_name: raw_info['last_name'],
-          title: raw_info['title'],
-          group: raw_info['user_groups']
+          email: raw_info['user']['email'],
+          first_name: raw_info['user']['first_name'],
+          last_name: raw_info['user']['last_name'],
+          title: raw_info['user']['title'],
+          group: raw_info['user']['user_groups']
         }
       end
 
