@@ -72,7 +72,7 @@ class GcaSsoApi
   
   def post
     if @user_token
-      @response = @client[@request_uri].post :params => @params
+      @response = @client[@request_uri].post @params
     else
       @response = token.post(@request_uri, params: @params)
     end
