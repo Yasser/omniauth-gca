@@ -48,12 +48,14 @@ module OmniAuth
 end
 
 class GcaSsoApi
-  def initialize(request_uri, params={}, user_token = nil)
+  def initialize(request_uri, params={}, user_token=nil)
     @request_uri = request_uri
     @params = params
     @provider_host = OmniAuth::Strategies::Gca.default_options['client_options']['site']
     @user_token = user_token
     if @user_token
+      @client = RestClient::Resource.new(@provider_host)
+    else
       @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
       @token = @client.client_credentials.get_token
     end
@@ -62,7 +64,7 @@ class GcaSsoApi
   
   def get
     if @user_token
-      @response = RestClient.get @request_uri, {'Authorization' => "Bearer #{@user_token}"}
+      @response = @client.get @request_uri, {'Authorization' => "Bearer #{@user_token}"}
     else
       @response = token.get(@request_uri)
     end
@@ -70,7 +72,7 @@ class GcaSsoApi
   
   def post
     if @user_token
-      @response = RestClient.post @request_uri, {params: @params}, { 'Authorization' => "Bearer #{@user_token}" }
+      @response = @client.post @request_uri, {params: @params}, { 'Authorization' => "Bearer #{@user_token}" }
     else
       @response = token.post(@request_uri, params: @params)
     end
