@@ -54,7 +54,7 @@ class GcaSsoApi
     @provider_host = OmniAuth::Strategies::Gca.default_options['client_options']['site']
     @user_token = user_token
     if @user_token
-      @client = RestClient::Resource.new(@provider_host, headers: {Authorization: "Bearer #{@user_token}"})
+      @client = Faraday.new(@provider_host)
     else
       @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
       @token = @client.client_credentials.get_token
@@ -64,7 +64,9 @@ class GcaSsoApi
   
   def get
     if @user_token
-      @response = @client[@request_uri].get
+      @response = @client.get do |req|
+        req.headers['Authorization'] = "Bearer #{@user_token}"
+      end
     else
       @response = token.get(@request_uri)
     end
@@ -72,7 +74,10 @@ class GcaSsoApi
   
   def post
     if @user_token
-      @response = @client[@request_uri].post @params
+      @response = @client.post do |req|
+        req.headers['Authorization'] = "Bearer #{@user_token}"
+        req.body = @params
+      end
     else
       @response = token.post(@request_uri, params: @params)
     end
