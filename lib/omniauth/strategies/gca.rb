@@ -64,7 +64,7 @@ class GcaSsoApi
   
   def get
     if @user_token
-      @response = @client[@request_uri].get :Authorization => "Basic #{@user_token}", grant_type: 'client_credentials'
+      @response = @client[@request_uri].get :Authorization => "Bearer #{@user_token}", grant_type: 'client_credentials'
     else
       @response = token.get(@request_uri)
     end
@@ -72,7 +72,7 @@ class GcaSsoApi
   
   def post
     if @user_token
-      @response = @client[@request_uri].post :params => @params, :Authorization => "Basic #{@user_token}", grant_type: 'client_credentials'
+      @response = @client[@request_uri].post :params => @params, :Authorization => "Bearer #{@user_token}", grant_type: 'client_credentials'
     else
       @response = token.post(@request_uri, params: @params)
     end
