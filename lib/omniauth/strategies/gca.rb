@@ -55,7 +55,6 @@ class GcaSsoApi
     @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
     @token = @client.client_credentials.get_token
     @user_token = user_token
-    logger.debug("********** GcaSsoApi: #{@user_token}")
     @response = nil
   end
   
@@ -69,10 +68,8 @@ class GcaSsoApi
   
   def post
     if @user_token
-      logger.debug("********** GcaSsoApi: Posting with usertoken...")
       @response = RestClient.post @request_uri, {params: @params}, { 'Authorization' => "Bearer #{@user_token}" }
     else
-      logger.debug("********** GcaSsoApi: Posting from client...")
       @response = token.post(@request_uri, params: @params)
     end
   end
