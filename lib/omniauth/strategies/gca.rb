@@ -1,4 +1,5 @@
 require 'omniauth-oauth2'
+require 'rest-client'
 
 module OmniAuth
   module Strategies
@@ -47,21 +48,30 @@ module OmniAuth
 end
 
 class GcaSsoApi
-  def initialize(request_uri, params={})
+  def initialize(request_uri, params={}, user_token = nil)
     @request_uri = request_uri
     @params = params
     @provider_host = OmniAuth::Strategies::Gca.default_options['client_options']['site']
     @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
     @token = @client.client_credentials.get_token
+    @user_token = user_token
     @response = nil
   end
   
   def get
-    @response = token.get(@request_uri)
+    if @user_token
+      @response = RestClient.get @request_uri, {'Authorization' => "Bearer #{@user_token}"}
+    else
+      @response = token.get(@request_uri)
+    end
   end
   
   def post
-    @response = token.post(@request_uri, params: @params)
+    if @user_token
+      @response = RestClient.post @request_uri, {params: @params}, { 'Authorization' => "Bearer #{@user_token}" }
+    else
+      @response = token.post(@request_uri, params: @params)
+    end
   end
   
   def response
