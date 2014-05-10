@@ -52,9 +52,11 @@ class GcaSsoApi
     @request_uri = request_uri
     @params = params
     @provider_host = OmniAuth::Strategies::Gca.default_options['client_options']['site']
-    @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
-    @token = @client.client_credentials.get_token
     @user_token = user_token
+    if @user_token
+      @client = OAuth2::Client.new(ENV["GCA_SSO_APP_ID"], ENV["GCA_SSO_APP_SECRET"], site: @provider_host, :raise_errors => false)
+      @token = @client.client_credentials.get_token
+    end
     @response = nil
   end
   
