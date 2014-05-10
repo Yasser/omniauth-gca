@@ -1,5 +1,5 @@
 require 'omniauth-oauth2'
-require 'rest-client'
+require 'faraday'
 
 module OmniAuth
   module Strategies
