@@ -64,7 +64,7 @@ class GcaSsoApi
   
   def get
     if @user_token
-      @response[@request_uri] = @client.get {'Authorization' => "Bearer #{@user_token}"}
+      @response[@request_uri] = @client.get {Authorization: "Bearer #{@user_token}"}
     else
       @response = token.get(@request_uri)
     end
@@ -72,7 +72,7 @@ class GcaSsoApi
   
   def post
     if @user_token
-      @response[@request_uri] = @client.post {:params => @params, 'Authorization' => "Bearer #{@user_token}"}
+      @response[@request_uri] = @client.post {params: @params, Authorization: "Bearer #{@user_token}"}
     else
       @response = token.post(@request_uri, params: @params)
     end
