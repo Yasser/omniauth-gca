@@ -65,6 +65,7 @@ class GcaSsoApi
   def get
     if @user_token
       @response = @client.get do |req|
+        req.url @request_uri
         req.headers['Authorization'] = "Bearer #{@user_token}"
       end
     else
@@ -75,6 +76,7 @@ class GcaSsoApi
   def post
     if @user_token
       @response = @client.post do |req|
+        req.url @request_uri
         req.headers['Authorization'] = "Bearer #{@user_token}"
         req.body = @params
       end
