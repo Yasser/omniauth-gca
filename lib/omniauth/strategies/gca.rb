@@ -10,9 +10,9 @@ module OmniAuth
 
       if Rails.env.production?
         option :client_options, {
-          :site =>  "http://sso.gcadoctors.com",
-          :authorize_url => "http://sso.gcadoctors.com/oauth/authorize",
-          :access_token_url => "http://sso.gcadoctors.com/oauth/token"
+          :site =>  "https://sso.gcadoctors.com",
+          :authorize_url => "https://sso.gcadoctors.com/oauth/authorize",
+          :access_token_url => "https://sso.gcadoctors.com/oauth/token"
         }
       else
         option :client_options, {
