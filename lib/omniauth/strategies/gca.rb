@@ -68,9 +68,10 @@ class GcaSsoApi
       @response = @client.get do |req|
         req.url @request_uri
         req.headers['Authorization'] = "Bearer #{@user_token}"
+        req.params = @params
       end
     else
-      @response = token.get(@request_uri)
+      @response = token.get(@request_uri, params: @params)
     end
   end
   
