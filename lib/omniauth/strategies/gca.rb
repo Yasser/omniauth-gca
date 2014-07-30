@@ -9,11 +9,19 @@ module OmniAuth
       end
 
       if Rails.env.production?
-        option :client_options, {
-          :site =>  "https://sso.gcadoctors.com",
-          :authorize_url => "https://sso.gcadoctors.com/oauth/authorize",
-          :access_token_url => "https://sso.gcadoctors.com/oauth/token"
-        }
+        if ENV["STAGING"] == "true"
+          option :client_options, {
+            :site =>  "http://gca-sso-staging.herokuapp.com",
+            :authorize_url => "http://gca-sso-staging.herokuapp.com/oauth/authorize",
+            :access_token_url => "http://gca-sso-staging.herokuapp.com/oauth/token"
+          }
+        else
+          option :client_options, {
+            :site =>  "https://sso.gcadoctors.com",
+            :authorize_url => "https://sso.gcadoctors.com/oauth/authorize",
+            :access_token_url => "https://sso.gcadoctors.com/oauth/token"
+          }
+        end
       else
         option :client_options, {
           :site =>  "http://0.0.0.0:3000",
