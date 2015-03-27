@@ -1,7 +1,7 @@
 require_dependency 'omniauth_gca/application_controller'
 
 module OmniauthGca
-  class GcaSsoSessionsController < ApplicationController
+  class SessionsController < ApplicationController
   
     def new
       redirect_to '/auth/gca'
