@@ -1,7 +1,6 @@
-require_dependency 'gca_sso_client/application_controller'
-
 module GcaSsoClient
   class SessionsController < ApplicationController
+    before_action :sync_access_groups, only: [:create]
   
     def new
       redirect_to '/auth/gca'
