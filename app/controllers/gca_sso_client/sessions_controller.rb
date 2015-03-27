@@ -33,7 +33,7 @@ module GcaSsoClient
       session[:expires_at] = Time.parse(auth['extra']['expires_at']) if session[:trusted]
       session[:last_activity] = Time.now
     
-      flash[:notice] = "Successfully signed in. Welcome, #{current_user.name}."
+      flash[:notice] = "Successfully signed in. Welcome, #{user.name}."
     
       redirect_to after_session_create_path
     end
