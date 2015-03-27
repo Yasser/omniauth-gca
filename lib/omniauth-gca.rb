@@ -1,6 +1,6 @@
-require "omniauth_gca/version"
+require "omniauth-gca/version"
 require "omniauth/strategies/gca"
-require "omniauth_gca/engine"
+require "gca_sso_client/engine"
 
-module OmniauthGca
+module GcaSsoClient
 end

@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'omniauth_gca/version'
+require 'omniauth-gca/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "omniauth-gca"
-  spec.version       = OmniauthGca::VERSION
+  spec.version       = Omniauth::Gca::VERSION
   spec.authors       = ["Yasser Dahab"]
   spec.email         = ["y@yasserdahab.com"]
   spec.description   = %q{GCA SSO}

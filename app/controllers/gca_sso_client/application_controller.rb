@@ -1,4 +1,4 @@
-module OmniauthGca
+module GcaSsoClient
   class ApplicationController < ActionController::Base
 
     def expire_session
