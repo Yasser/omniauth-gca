@@ -39,9 +39,9 @@ module GcaSsoClient
     end
 
     def destroy
-      if current_user
+      if session[:user]
         prior_flash = flash[:notice]
-        current_user.rotate_timestamps
+        User.find_by(uid: session[:user]).rotate_timestamps
         reset_session
         flash[:notice] = prior_flash || "You have successfully signed out."
       end
