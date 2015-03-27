@@ -1,4 +1,6 @@
-module Omniauth::Gca
+require_dependency 'omniauth_gca/application_controller'
+
+module OmniauthGca
   class GcaSsoSessionsController < ApplicationController
   
     def new
