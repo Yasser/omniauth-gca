@@ -5,7 +5,7 @@ require 'omniauth_gca/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "omniauth-gca"
-  spec.version       = Omniauth::Gca::VERSION
+  spec.version       = OmniauthGca::VERSION
   spec.authors       = ["Yasser Dahab"]
   spec.email         = ["y@yasserdahab.com"]
   spec.description   = %q{GCA SSO}
