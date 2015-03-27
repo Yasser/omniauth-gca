@@ -1,5 +1,5 @@
 module Omniauth
   module Gca
-    VERSION = "0.0.65"
+    VERSION = "0.1.0"
   end
 end
