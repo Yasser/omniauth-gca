@@ -1,0 +1,37 @@
+<h3>Registered Users <small>(<%= @users.size %>)</small></h3>
+
+<p>Users are synced from GCA SSO, but not deleted. You can delete inactive or closed accounts by selecting "Destroy" below.</p>
+
+<%= link_to "Sync with SSO", sync_users_url, method: :patch, class: "btn btn-success" %>
+
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-striped">
+		  <thead>
+		    <tr>
+		  	  <th class="hidden-xs">Doc ID</th>
+			  <th>Name</th>
+		      <th class="hidden-xs">Email</th>
+			  <th class="hidden-xs">Roles</th>
+		      <th class="hidden-xs">Last Activity</th>
+		      <th class="hidden-xs"></th>
+		    </tr>
+		  </thead>
+
+		  <tbody>
+		    <% @users.each do |user| %>
+		      <tr>
+		    	<td class="hidden-xs"><%= user.uid %></td>
+		  		<td><%= user.name_last_first %></td>
+				<td class="hidden-xs"><%= user.email %></td>
+				<td class="hidden-xs"><%= user.roles.join(", ") %></td>
+				<td class="hidden-xs"><%= user.last_activity %></td>
+		        <td class="hidden-xs">
+					<%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-warning" if current_user.acts_as(:admin) %>
+				</td>
+		      </tr>
+		    <% end %>
+		  </tbody>
+		</table>
+	</div>
+</div>

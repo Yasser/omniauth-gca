@@ -49,11 +49,11 @@ module GcaSsoClient
         reset_session
         flash[:notice] = prior_flash || "You have successfully signed out."
       end
-      redirect_to Rails.configuration.sso_redirect_after_session_destroy ? after_session_destroy_redirect_path : root_url
+      redirect_to Rails.configuration.sso_redirect_after_session_destroy ? after_session_destroy_redirect_path : main_app.root_url
     end
 
     def failure
-      redirect_to (request.env['omniauth.origin'] || root_url), alert: "Authentication error: #{params[:message].humanize}"
+      redirect_to (request.env['omniauth.origin'] || main_app.root_url), alert: "Authentication error: #{params[:message].humanize}"
     end
   
     def idle
@@ -63,7 +63,7 @@ module GcaSsoClient
     protected
   
     def after_session_create_path
-      request.env['omniauth.origin'].include?(root_url) ? request.env['omniauth.origin'] : root_url
+      request.env['omniauth.origin'].include?(main_app.root_url) ? request.env['omniauth.origin'] : main_app.root_url
     end
   
     def permitted(roles)
