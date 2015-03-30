@@ -6,7 +6,7 @@ module GcaSsoClient
     protected
 
     def authenticate_user!
-      redirect_to signin_url unless user_signed_in?
+      redirect_to gca_sso_client.signin_url unless user_signed_in?
     end
 
     def current_user
@@ -15,7 +15,7 @@ module GcaSsoClient
     end
 
     def expire_session
-      redirect_to signout_url, _method: :delete, notice: "Your session has ended due to inactivity."
+      redirect_to gca_sso_client.signout_url, _method: :delete, notice: "Your session has ended due to inactivity."
     end
 
     def method_missing(m, *args)
@@ -34,7 +34,7 @@ module GcaSsoClient
       message ||= 'You are not authorized to peform that action.'
       raise if !condition
     rescue
-      redirect_to (request.referer || root_url), :alert => message
+      redirect_to (request.referer || main_app.root_url), :alert => message
     end
 
     def user_signed_in?
