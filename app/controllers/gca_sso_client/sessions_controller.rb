@@ -66,6 +66,8 @@ module GcaSsoClient
   
     def after_session_create_path
       request.env['omniauth.origin'].include?(main_app.root_url) ? request.env['omniauth.origin'] : main_app.root_url
+    rescue
+      main_app.root_url
     end
   
     def permitted(roles)

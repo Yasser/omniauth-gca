@@ -11,6 +11,4 @@ GcaSsoClient::Engine.routes.draw do
       patch 'sync', to: 'users#sync', as: :sync
     end
   end
-  
-  root to: 'sessions#index'
 end
