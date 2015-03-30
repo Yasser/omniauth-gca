@@ -15,6 +15,14 @@ module GcaSsoClient
       role_array = [role_array].flatten.map &:to_sym
       !(roles & role_array).empty?
     end
+    
+    def initials
+      "#{first_name[0]}#{last_name[0]}"
+    end
+  
+    def is?(obj)
+      self == obj
+    end
   
     def last_activity
       if current_sign_in_at.nil?
