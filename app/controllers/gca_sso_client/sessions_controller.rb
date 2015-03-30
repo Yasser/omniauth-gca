@@ -1,6 +1,8 @@
 module GcaSsoClient
   class SessionsController < ApplicationController
     before_action :sync_access_groups, only: [:create]
+    skip_before_action :authenticate_user!
+    skip_before_action :validate_session
   
     def index
       redirect_to :signin if Rails.configuration.sso_redirect_as_session_index

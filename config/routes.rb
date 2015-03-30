@@ -12,4 +12,5 @@ GcaSsoClient::Engine.routes.draw do
     end
   end
   
+  root to: 'sessions#index'
 end
