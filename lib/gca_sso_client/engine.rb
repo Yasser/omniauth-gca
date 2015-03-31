@@ -17,7 +17,7 @@ module GcaSsoClient
     end
     
     def self.path_for(e)
-      "#{root}/app/#{e}/gca_sso_client"
+      File.join("#{root}", "../app/#{e}/gca_sso_client")
     end
     
     isolate_namespace GcaSsoClient
