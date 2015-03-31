@@ -1,5 +1,6 @@
 module GcaSsoClient
   class UsersController < ApplicationController
+    before_action :authenticate_user!
     before_action :current_user_acts_as_admin, only: [:destroy, :sync]  
     
     def index
