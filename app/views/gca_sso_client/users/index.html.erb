@@ -2,7 +2,7 @@
 
 <p>Users are synced from GCA SSO, but not deleted. You can delete inactive or closed accounts by selecting "Destroy" below.</p>
 
-<%= link_to "Sync with SSO", sync_users_url, method: :patch, class: "btn btn-success" %>
+<%= link_to "Sync with SSO", sync_users_url(force: "force"), method: :patch, class: "btn btn-success" %>
 
 <div class="row">
 	<div class="col-sm-12">

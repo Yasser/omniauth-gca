@@ -8,7 +8,7 @@ GcaSsoClient::Engine.routes.draw do
   
   resources :users, only: [:index, :destroy] do
     collection do
-      patch 'sync', to: 'users#sync', as: :sync
+      patch 'sync/(:force)', to: 'users#sync', as: :sync
     end
   end
 end
