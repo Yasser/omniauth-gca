@@ -1,3 +1,5 @@
+require_dependency "gca_sso_client/application_controller"
+
 module GcaSsoClient
   class SessionsController < ApplicationController
     before_action :sync_access_groups, only: [:create]
@@ -75,7 +77,7 @@ module GcaSsoClient
     end
   
     def permitted_roles
-      Rails.configuration.sso_permitted_roles || :all
+      Rails.configuration.respond_to?(:sso_permitted_roles) ? Rails.configuration.sso_permitted_roles : :all
     end
   
     def after_session_destroy_redirect_path

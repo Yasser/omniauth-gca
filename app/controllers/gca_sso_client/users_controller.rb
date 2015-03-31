@@ -1,5 +1,9 @@
+require_dependency "gca_sso_client/application_controller"
+
 module GcaSsoClient
   class UsersController < ApplicationController
+    layout 'application'
+    
     before_action :authenticate_user!
     before_action :current_user_acts_as_admin, only: [:index, :destroy]  
     

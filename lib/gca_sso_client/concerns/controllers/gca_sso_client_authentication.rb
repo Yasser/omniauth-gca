@@ -11,7 +11,7 @@ module GcaSsoClient
 
     def current_user
       return nil if session[:user].nil?
-      @current_user ||= User.find_by(uid: session[:user])
+      @current_user ||= (defined?(::User) ? ::User : User).find_by(uid: session[:user])
     end
 
     def expire_session
