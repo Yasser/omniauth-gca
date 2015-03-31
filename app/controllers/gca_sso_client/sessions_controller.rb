@@ -5,7 +5,7 @@ module GcaSsoClient
     skip_before_action :validate_session
   
     def index
-      redirect_to :signin if Rails.configuration.sso_redirect_as_session_index
+      redirect_to :signin unless Rails.configuration.sso_redirect_as_session_index == false
     end
   
     def new
@@ -75,7 +75,7 @@ module GcaSsoClient
     end
   
     def permitted_roles
-      :all
+      Rails.configuration.sso_permitted_roles || :all
     end
   
     def after_session_destroy_redirect_path
