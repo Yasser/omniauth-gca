@@ -4,7 +4,15 @@ module GcaSsoClient
     module GcaSsoClientHelperMethods
       def current_user
         return nil if session[:user].nil?
-        @current_user ||= (defined?(::User) ? ::User : User).find_by(uid: session[:user])
+        
+        main_app_user_class = ::User
+        engine_user_class = User
+        user_class = defined?(main_app_user_class) ? main_app_user_class : engine_user_class
+        if @current_user && @current_user.is_a?(user_class)
+          @current_user
+        else
+          @current_user = user_class.find_by(uid: session[:user])
+        end
       end
 
       def user_signed_in?
