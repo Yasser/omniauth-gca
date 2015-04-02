@@ -23,7 +23,14 @@ module GcaSsoClient
     end
 
     def expire_session
-      redirect_to gca_sso_client.signout_url, _method: :delete, notice: "Your session has ended due to inactivity."
+      if Rails.configuration.sso_redirect_as_session_index == false && Rails.configuration.sso_redirect_after_session_destroy != true
+        redirect_to gca_sso_client.signout_url, _method: :delete, notice: "Your session has ended due to inactivity."
+      else
+        # No flash message, since redirecting to SSO for re-authentication
+        User.find_by(uid: session[:user]).rotate_timestamps
+        reset_session
+        redirect_to gca_sso_client.signin_url
+      end
     end
 
     def method_missing(m, *args)
