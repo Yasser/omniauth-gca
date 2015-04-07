@@ -18,7 +18,7 @@ module GcaSsoClient
       auth = request.env["omniauth.auth"]
       roles = auth['info']['group']
     
-      redirect_to root_url, alert: "You do not have sufficient priveleges to use this application." unless permitted(roles)
+      redirect_to after_session_destroy_path, alert: "You do not have sufficient priveleges to use this application." unless permitted(roles)
 
       user = User.find_by(uid: auth['uid'])
     
@@ -48,16 +48,16 @@ module GcaSsoClient
 
     def destroy
       if session[:user]
-        prior_flash = flash[:notice]
+        prior_flash = flash[:notice] || "You have successfully signed out."
         User.find_by(uid: session[:user]).rotate_timestamps
         reset_session
-        flash[:notice] = prior_flash || "You have successfully signed out."
       end
-      redirect_to Rails.configuration.sso_redirect_after_session_destroy ? after_session_destroy_redirect_path : main_app.root_url
+      flash[:notice] = prior_flash if Rails.configuration.sso_redirect_after_session_destroy
+      redirect_to after_session_destroy_path
     end
 
     def failure
-      redirect_to (request.env['omniauth.origin'] || main_app.root_url), alert: "Authentication error: #{params[:message].humanize}"
+      redirect_to after_session_destroy_path, alert: "Authentication error: #{params[:message].humanize}"
     end
   
     def idle
@@ -71,6 +71,14 @@ module GcaSsoClient
     rescue
       main_app.root_url
     end
+    
+    def after_session_destroy_redirect_path
+      "#{sso_url}/sessions/catch/#{ENV["GCA_SSO_APP_ID"]}"
+    end
+  
+    def after_session_destroy_path
+      Rails.configuration.sso_redirect_after_session_destroy ? after_session_destroy_redirect_path : main_app.root_url
+    end
   
     def permitted(roles)
       (roles & [permitted_roles].flatten).size > 0 || roles.include?("admin") || permitted_roles == :all
@@ -78,10 +86,6 @@ module GcaSsoClient
   
     def permitted_roles
       Rails.configuration.respond_to?(:sso_permitted_roles) ? Rails.configuration.sso_permitted_roles : :all
-    end
-  
-    def after_session_destroy_redirect_path
-      "#{sso_url}/sessions/catch/#{ENV["GCA_SSO_APP_ID"]}"
     end
   
     def sso_url
