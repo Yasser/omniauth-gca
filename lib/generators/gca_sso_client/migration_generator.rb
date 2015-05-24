@@ -1,5 +1,6 @@
 require 'rails/generators/active_record'
 
+# rails g gca_sso_client:migration 
 class GcaSsoClient::MigrationGenerator < ::Rails::Generators::Base
   include Rails::Generators::Migration
   source_root File.expand_path('../templates', __FILE__)

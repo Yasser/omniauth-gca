@@ -5,6 +5,21 @@ module GcaSsoClient
 
     protected
 
+    def after_session_create_path
+      request.env['omniauth.origin'].include?(main_app.root_url) ? request.env['omniauth.origin'] : main_app.root_url
+    rescue
+      main_app.root_url
+    end
+    
+    def after_session_destroy_redirect_path(message=nil)
+      catch_message = message.nil? ? "" : "/#{message}"
+      "#{sso_url}/sessions/catch/#{ENV["GCA_SSO_APP_ID"]}#{catch_message}"
+    end
+  
+    def after_session_destroy_path(message=nil)
+      Rails.configuration.sso_redirect_after_session_destroy ? after_session_destroy_redirect_path(message) : main_app.root_url
+    end
+
     def authenticate_user!
       redirect_to gca_sso_client.signin_url unless user_signed_in?
     end
@@ -29,7 +44,7 @@ module GcaSsoClient
         # No flash message, since redirecting to SSO for re-authentication
         User.find_by(uid: session[:user]).rotate_timestamps
         reset_session
-        redirect_to gca_sso_client.signin_url
+        redirect_to after_session_destroy_path(:timedout)
       end
     end
 

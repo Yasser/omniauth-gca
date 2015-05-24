@@ -18,22 +18,22 @@ module GcaSsoClient
       auth = request.env["omniauth.auth"]
       roles = auth['info']['group']
     
-      redirect_to after_session_destroy_path, alert: "You do not have sufficient priveleges to use this application." unless permitted(roles)
+      redirect_to after_session_destroy_path(:unauthorized), alert: "You do not have sufficient priveleges to use this application." unless permitted(roles)
 
       user = User.find_by(uid: auth['uid'])
     
       if user
         attributes = {access_group_ids: AccessGroup.where(key: roles).pluck(:id), admin: roles.include?("admin")}
-        [:first_name, :last_name, :title].each do |n|
+        [:first_name, :last_name, :title, :billing_id].each do |n|
           attributes.merge!({n => auth['info'][n.to_s]}) if auth['info'][n.to_s] != user.send(n)
         end
         user.assign_attributes(attributes)
         user.set_timestamps_from_request(request)
         user.save
       else
-        params_from_sso = {uid: auth['uid'], first_name: auth['info']['first_name'], last_name: auth['info']['last_name'], title: auth['info']['title'], email: auth['info']['email'], access_group_ids: AccessGroup.where(key: roles).select(:id).map(&:id), admin: roles.include?("admin"), current_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip}
+        params_from_sso = {uid: auth['uid'], first_name: auth['info']['first_name'], last_name: auth['info']['last_name'], title: auth['info']['title'], billing_id: auth['info']['billing_id'], email: auth['info']['email'], access_group_ids: AccessGroup.where(key: roles).select(:id).map(&:id), admin: roles.include?("admin"), current_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip}
         parameters = ActionController::Parameters.new(params_from_sso)
-        user = User.create(parameters.permit(:uid, :first_name, :last_name, :title, :email, :admin, :current_sign_in_at, :current_sign_in_ip, :access_group_ids => []))
+        user = User.create(parameters.permit(:uid, :first_name, :last_name, :title, :email, :billing_id, :admin, :current_sign_in_at, :current_sign_in_ip, :access_group_ids => []))
       end
       session[:user] = user.uid
       session[:user_token] = auth['credentials']['token']
@@ -52,12 +52,12 @@ module GcaSsoClient
         User.find_by(uid: session[:user]).rotate_timestamps
         reset_session
       end
-      flash[:notice] = prior_flash if Rails.configuration.sso_redirect_after_session_destroy
-      redirect_to after_session_destroy_path
+      flash[:notice] = prior_flash unless Rails.configuration.sso_redirect_after_session_destroy
+      redirect_to after_session_destroy_path(:signedout)
     end
 
     def failure
-      redirect_to after_session_destroy_path, alert: "Authentication error: #{params[:message].humanize}"
+      redirect_to after_session_destroy_path("Authentication error: #{params[:message].humanize}"), alert: "Authentication error: #{params[:message].humanize}"
     end
   
     def idle
@@ -65,21 +65,7 @@ module GcaSsoClient
     end
 
     protected
-  
-    def after_session_create_path
-      request.env['omniauth.origin'].include?(main_app.root_url) ? request.env['omniauth.origin'] : main_app.root_url
-    rescue
-      main_app.root_url
-    end
     
-    def after_session_destroy_redirect_path
-      "#{sso_url}/sessions/catch/#{ENV["GCA_SSO_APP_ID"]}"
-    end
-  
-    def after_session_destroy_path
-      Rails.configuration.sso_redirect_after_session_destroy ? after_session_destroy_redirect_path : main_app.root_url
-    end
-  
     def permitted(roles)
       (roles & [permitted_roles].flatten).size > 0 || roles.include?("admin") || permitted_roles == :all
     end

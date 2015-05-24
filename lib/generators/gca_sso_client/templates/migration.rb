@@ -21,6 +21,7 @@ class CreateGcaSsoClientTables < ActiveRecord::Migration
       t.integer  :uid,         null: false
       t.string   :first_name,  null: false
       t.string   :last_name,   null: false
+      t.string   :billing_id
       t.string   :title
       t.datetime :current_sign_in_at
       t.datetime :last_sign_in_at
