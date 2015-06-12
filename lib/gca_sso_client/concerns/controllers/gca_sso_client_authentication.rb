@@ -86,5 +86,11 @@ module GcaSsoClient
       end
     end
     
+    protected
+    
+    def sso_url
+      OmniAuth::Strategies::Gca.default_options['client_options']['site']
+    end
+    
   end
 end
