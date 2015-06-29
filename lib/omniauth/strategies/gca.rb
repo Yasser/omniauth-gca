@@ -38,6 +38,7 @@ module OmniAuth
           first_name: raw_info['user']['first_name'],
           last_name: raw_info['user']['last_name'],
           title: raw_info['user']['title'],
+          npi: raw_info['user']['npi'],
           group: raw_info['user']['user_groups']
         }
       end
