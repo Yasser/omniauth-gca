@@ -32,9 +32,11 @@ module GcaSsoClient
         end
       end
 
-      last_modified = Rails.cache.read(:user_list_updated_at) || User.order("created_at ASC").last.created_at
       if Time.now - last_modified > 15.minutes || params[:force] == "force"
-        request = GcaSsoApi.new("/api/users/since/#{last_modified.strftime('%Y-%m-%d-%H:%M')}")
+        last_modified = Rails.cache.read(:user_list_updated_at)
+        request_uri = last_modified.present? ? "/api/users/since/#{last_modified.strftime('%Y-%m-%d-%H:%M')}" : "/api/users"
+        
+        request = GcaSsoApi.new(request_uri)
         response = request.get
     
         if response.status == 200
