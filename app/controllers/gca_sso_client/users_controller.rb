@@ -46,15 +46,16 @@ module GcaSsoClient
             u = User.where(uid: user["uid"])
             if u.exists?
               u = u.first
-              attributes = {}
-              attributes.merge!(access_group_ids: AccessGroup.where(key: user["user_groups"]).pluck(:id))
-              [:first_name, :last_name, :title, :npi].each do |attribute|
-                attributes.merge!(attribute => user[attribute.to_s]) if u.send(attribute) != user[attribute.to_s]
-              end
-              u.assign_attributes(attributes)
             else
-              u = User.new(uid: user["uid"], access_group_ids: AccessGroup.where(key: user["user_groups"]).pluck(:id), email: user["email"], first_name: user['first_name'], last_name: user['last_name'], title: user['title'], npi: user['npi'])
+              u = User.new(uid: user["uid"], email: user["email"])
             end
+            attributes = {}
+            attributes.merge!(access_group_ids: AccessGroup.where(key: user["user_groups"]).pluck(:id))
+            [:first_name, :last_name, :legal_first_name, :legal_last_name, :title, :npi].each do |attribute|
+              attributes.merge!(attribute => user[attribute.to_s]) if u.send(attribute) != user[attribute.to_s]
+            end
+            u.assign_attributes(attributes)
+            
             u.save if u.changed?
           end
           Rails.cache.write(:user_list_updated_at, Time.now)
