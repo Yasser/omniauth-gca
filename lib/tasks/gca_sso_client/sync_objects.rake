@@ -1,5 +1,5 @@
 namespace :sync do
-
+  
   task all: :environment do
     Rake::Task["gcassoclient:sync:access_groups"].invoke
     Rake::Task["gcassoclient:sync:users"].invoke
@@ -29,8 +29,10 @@ namespace :sync do
         u.save if u.changed?
       end
       Rails.cache.write(:user_list_updated_at, Time.now)
-    else
+
       puts "done.\n"
+    else
+      puts "The API server responded with an error. No users were synced.\n"
     end
   end
   
@@ -51,6 +53,8 @@ namespace :sync do
           AccessGroup.create(key: group["key"], title: group["title"], group_key: group["group"], group_title: access_groups["categories"].select{|c| c["key"] == group["group"]}.first["title"])
         end
       end
+    else
+      puts "The API server responded with an error. No access groups were synced.\n"
     end
     
     puts "done.\n"
