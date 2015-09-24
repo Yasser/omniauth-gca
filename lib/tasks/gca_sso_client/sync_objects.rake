@@ -1,10 +1,12 @@
 namespace :sync do
   
+  desc "Syncs all users and access groups with GCA SSO"
   task all: :environment do
     Rake::Task["gcassoclient:sync:access_groups"].invoke
     Rake::Task["gcassoclient:sync:users"].invoke
   end
   
+  desc "Syncs users (GcaSsoClient::User) with GCA SSO"
   task users: :environment do
     puts "Syncing users...\n"
     
@@ -36,6 +38,7 @@ namespace :sync do
     end
   end
   
+  desc "Syncs access groups (GcaSsoClient::AccessGroup) with GCA SSO"
   task access_groups: :environment do
     puts "Syncing access groups...\n"
     request = GcaSsoApi.new("/api/users/groups")
