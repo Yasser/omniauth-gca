@@ -56,7 +56,7 @@ module GcaSsoClient
     def set_timestamps_from_request(request)
       # Rotate timestamps if session expired instead of being destroyed
       rotate_timestamps(false) if !current_sign_in_at.nil?
-      assign_attributes(current_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip)
+      assign_attributes(current_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip.to_s)
     end
   
     def to_s
