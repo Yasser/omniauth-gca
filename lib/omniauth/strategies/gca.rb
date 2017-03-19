@@ -17,9 +17,9 @@ module OmniAuth
           }
         else
           option :client_options, {
-            :site =>  "https://sso.gcadoctors.com",
-            :authorize_url => "https://sso.gcadoctors.com/oauth/authorize",
-            :access_token_url => "https://sso.gcadoctors.com/oauth/token"
+            :site =>  "https://sso.usap-colorado.com",
+            :authorize_url => "https://sso.usap-colorado.com/oauth/authorize",
+            :access_token_url => "https://sso.usap-colorado.com/oauth/token"
           }
         end
       else
